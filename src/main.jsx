@@ -6,43 +6,75 @@ import App from "./App.jsx";
 import { CustomerPage } from "./pages/CustomerPage.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
-import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import { NotFoundPage } from "./error/NotFoundPage";
+import { AuthProvider } from "./contexts/AuthContext";
+import { CustomerProvider } from "./contexts/CustomerContext";
+import Transaction from "./pages/Transaction.jsx";
+import { TransactionProvider } from "./contexts/TransactionContext";
+import Employee from "./pages/Employee.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route index element={<App />} />
-          <Route
-            path="/customer"
-            element={
-              <ProtectedRoute>
-                <CustomerPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            }
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <CustomerProvider>
+          <TransactionProvider>
+            <Routes>
+              <Route index element={<App />} />
+              <Route
+                path="/customer"
+                element={
+                  <ProtectedRoute>
+                    <CustomerPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/transaction"
+                element={
+                  <ProtectedRoute>
+                    <Transaction />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/operation/employee-salaries"
+                element={
+                  <ProtectedRoute>
+                    <Employee />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/operation/operational-expenses"
+                element={
+                  <ProtectedRoute>
+                    <Transaction />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </TransactionProvider>
+        </CustomerProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

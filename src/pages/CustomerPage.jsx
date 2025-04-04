@@ -1,49 +1,26 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
 import { CustomerForm } from "../components/CustomerForm";
 import AuthLayout from "../components/AuthLayout";
+import { useCustomers } from "../contexts/CustomerContext";
+import SearchBar from "../components/SearchBar";
 
 function CustomerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [customers, setCustomers] = useState([]);
-  const STORAGE_KEY = "cached_customers";
+  const {
+    customers,
+    fetchCustomers,
+    searchCustomers,
+    currentPage,
+    changePage,
+    totalPages,
+  } = useCustomers();
 
   useEffect(() => {
     fetchCustomers();
-  }, []);
+  }, [fetchCustomers]);
 
-  const fetchCustomers = async () => {
-    try {
-      // Check local storage first
-      const cachedData = localStorage.getItem(STORAGE_KEY);
-      if (cachedData) {
-        setCustomers(JSON.parse(cachedData));
-      }
-
-      // Fetch fresh data from Firestore
-      const querySnapshot = await getDocs(collection(db, "customers"));
-      const customersList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // Update state and cache
-      setCustomers(customersList);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(customersList));
-    } catch (error) {
-      console.error("Error fetching customers:", error);
-      // If error occurs and we have cached data, use that
-      const cachedData = localStorage.getItem(STORAGE_KEY);
-      if (cachedData) {
-        setCustomers(JSON.parse(cachedData));
-      }
-    }
-  };
-
-  const handleSuccess = async () => {
-    await fetchCustomers();
-    setIsModalOpen(false);
+  const handleSearch = (query) => {
+    searchCustomers(query);
   };
 
   return (
@@ -59,6 +36,12 @@ function CustomerPage() {
               Add Customer
             </button>
           </div>
+
+          {/* Reusable Search Bar */}
+          <SearchBar
+            placeholder="Search customers by name..."
+            onSearch={handleSearch}
+          />
 
           {/* Table */}
           <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -90,6 +73,27 @@ function CustomerPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={() => changePage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => changePage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
