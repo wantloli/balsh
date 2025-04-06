@@ -66,7 +66,7 @@ const AuthLayout = ({ children }) => {
 
   return (
     <div className="min-h-screen flex">
-      <div className="fixed left-0 top-0 h-full w-64 bg-red-800 text-white">
+      <div className="fixed left-0 top-0 h-full w-72 bg-red-800 text-white flex flex-col">
         {/* Time Display */}
         <div className="px-4 py-3 bg-red-900 text-white text-sm">
           <div className="font-bold mb-1">
@@ -77,27 +77,46 @@ const AuthLayout = ({ children }) => {
         {/* Logo Section */}
         <div className="flex flex-col items-center justify-center h-44 pt-4">
           <img
-            src="src/assets/images/municipal-logo.png" // Replace with your logo path
+            src="/src/assets/images/municipal-logo.png"
             alt="Logo"
             className="h-40 w-auto"
           />
-          <p>MUNICIPALITY OF BALAYAN </p>
+          <p
+            className="tracking-wider text-sm"
+            style={{ fontFamily: "PlayfairDisplay, sans-serif" }}
+          >
+            MUNICIPALITY OF BALAYAN{" "}
+          </p>
         </div>
-
-        <ul className="pt-4 space-y-2">
+        <ul className="pt-4 space-y-2 mt-6">
           <Link to="/dashboard">
-            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer">
-              Dashboard
+            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer flex items-center space-x-2">
+              <img
+                src="/src/assets/dashboard.svg"
+                alt="Dashboard Icon"
+                className="h-5 w-5"
+              />
+              <span>Dashboard</span>
             </li>
           </Link>
           <Link to="/customer">
-            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer">
-              Customer
+            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer flex items-center space-x-2">
+              <img
+                src="/src/assets/customer.svg"
+                alt="Customer Icon"
+                className="h-5 w-5"
+              />
+              <span>Customer</span>
             </li>
           </Link>
           <Link to="/transaction">
-            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer">
-              Transaction
+            <li className="px-4 py-2 hover:bg-red-700 cursor-pointer flex items-center space-x-2">
+              <img
+                src="/src/assets/transaction.svg"
+                alt="Transaction Icon"
+                className="h-5 w-5"
+              />
+              <span>Transaction</span>
             </li>
           </Link>
 
@@ -122,24 +141,33 @@ const AuthLayout = ({ children }) => {
                   Operational Expenses
                 </li>
               </Link>
-              <Link to="/operation/other-expenses">
+              {/* <Link to="/operation/other-expenses">
                 <li className="px-4 py-2 hover:bg-red-700 cursor-pointer">
                   Other Expenses
                 </li>
-              </Link>
+              </Link> */}
             </ul>
           )}
 
           <li className="px-4 py-2 hover:bg-red-700 cursor-pointer">
             Settings
           </li>
-          <li
-            onClick={handleLogout}
-            className="px-4 py-2 hover:bg-red-700 cursor-pointer"
-          >
-            Logout
-          </li>
         </ul>
+        <div className="mt-auto mb-20">
+          <ul>
+            <li
+              onClick={handleLogout}
+              className="px-4 py-2 hover:bg-red-700 cursor-pointer flex items-center space-x-2"
+            >
+              <img
+                src="/src/assets/logout.svg"
+                alt="Logout Icon"
+                className="h-5 w-5"
+              />
+              <span>Logout</span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="flex-1 p-8 ml-64">{children}</div>
     </div>

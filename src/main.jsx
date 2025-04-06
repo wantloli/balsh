@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
+import './assets/fonts/font.css';
 import { CustomerPage } from "./pages/CustomerPage.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
@@ -14,6 +15,7 @@ import { CustomerProvider } from "./contexts/CustomerContext";
 import Transaction from "./pages/Transaction.jsx";
 import { TransactionProvider } from "./contexts/TransactionContext";
 import Employee from "./pages/Employee.jsx";
+import OperationalExpenses from "./pages/OperationalExpenses.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -59,7 +61,7 @@ createRoot(document.getElementById("root")).render(
                 path="/operation/operational-expenses"
                 element={
                   <ProtectedRoute>
-                    <Transaction />
+                    <OperationalExpenses />
                   </ProtectedRoute>
                 }
               />

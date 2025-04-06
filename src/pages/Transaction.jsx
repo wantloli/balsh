@@ -10,6 +10,8 @@ const Transaction = () => {
   const { transactions, fetchTransactions, isLoading } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchCustomers();
@@ -42,6 +44,17 @@ const Transaction = () => {
     return "Invalid Date";
   };
 
+  const paginatedTransactions = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <AuthLayout>
       <div className="max-w-7xl mx-auto p-6">
@@ -57,7 +70,7 @@ const Transaction = () => {
 
         {/* Reusable Search Bar */}
         <SearchBar
-          placeholder="Search transactions by customer name..."
+          placeholder="Search by customer name..."
           onSearch={handleSearch}
         />
 
@@ -86,7 +99,7 @@ const Transaction = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredTransactions.length === 0 ? (
+                {paginatedTransactions.length === 0 ? (
                   <tr>
                     <td
                       colSpan="4"
@@ -96,7 +109,7 @@ const Transaction = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredTransactions.map((transaction) => (
+                  paginatedTransactions.map((transaction) => (
                     <tr key={transaction.id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {formatDate(transaction.timestamp)}
@@ -137,6 +150,27 @@ const Transaction = () => {
             </table>
           </div>
         )}
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
 
         {/* Transaction Modal */}
         {isModalOpen && (
