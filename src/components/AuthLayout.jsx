@@ -169,7 +169,10 @@ const AuthLayout = ({ children }) => {
           </ul>
         </div>
       </div>
-      <div className="flex-1 p-8 ml-64">{children}</div>
+      <div className="flex-1 p-8 ml-72 relative bg-[url('/src/assets/images/bgc-front.jpg')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative">{children}</div>
+      </div>
     </div>
   );
 };

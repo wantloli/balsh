@@ -23,12 +23,17 @@ function CustomerPage() {
     searchCustomers(query);
   };
 
+  const handleSuccess = () => {
+    fetchCustomers(); // Refresh the customer list
+    setIsModalOpen(false); // Close the modal
+  };
+
   return (
     <AuthLayout>
-      <div className="min-h-screen bg-gray-100 py-6 px-4">
+      <div className="min-h-screen py-6 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Customers</h1>
+            <h1 className="text-2xl font-bold text-white">Customers</h1>
             <button
               onClick={() => setIsModalOpen(true)}
               className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
@@ -97,13 +102,13 @@ function CustomerPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
           <CustomerForm
             onClose={() => setIsModalOpen(false)}
-            onSuccess={handleSuccess}
+            onSuccess={handleSuccess} // Pass the handleSuccess function
           />
         </div>
       )}
